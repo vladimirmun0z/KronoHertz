@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>KronoHertz | Control de Inventario</title>
+    
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #fcfcfd;
+            color: #0d0e10;
+            padding-top: 6.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .container-fluid {
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        /* Encabezado de Sección Minimalista */
+        .krono-title-section {
+            padding: 2.5rem 0 1.5rem 0;
+        }
+        .inventory-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0d0e10;
+            letter-spacing: -0.04em;
+        }
+        
+        /* Contenedor Minimalista de Tabla */
+        .krono-card-table {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #f1f3f5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01), 0 20px 40px rgba(0,0,0,0.02);
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+
+        /* Tabla Integrada y Limpia */
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead th {
+            background-color: #ffffff;
+            color: #94a3b8;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+        .table tbody td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid #f1f3f5;
+            color: #0d0e10;
+            font-size: 0.9rem;
+        }
+
+        /* Proporciones Cuadradas para Relojes */
+        .watch-img-thumbnail {
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+        .table tbody tr:hover .watch-img-thumbnail {
+            transform: scale(1.04);
+        }
+
+        /* Texto de Fila */
+        .item-row-title {
+            font-weight: 600;
+            color: #0d0e10;
+            letter-spacing: -0.02em;
+        }
+        .price-text {
+            font-weight: 600;
+            color: #0d0e10;
+        }
+
+        /* Badges Planos */
+        .badge-krono {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            padding: 0.45em 0.85em;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .badge-yes {
+            background-color: #f0fdf4;
+            color: #166534;
+        }
+        .badge-no {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+        .badge-pending {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Botones Planos de Interacción */
+        .btn-krono-action {
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid transparent;
+        }
+        .btn-detail {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            margin-right: 8px;
+        }
+        .btn-detail:hover {
+            background-color: #0d0e10;
+            color: #ffffff;
+        }
+        .btn-delete {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+        .btn-delete:hover {
+            background-color: #991b1b;
+            color: #ffffff;
+        }
+        .btn-krono-create {
+            background-color: #0d0e10;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.55rem 1.25rem;
+            border-radius: 6px;
+            border: none;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        .btn-krono-create:hover {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div th:insert="~{menu :: menu-principal}"></div>
+
+    <div class="container-fluid mt-3">
+        
+        <div class="krono-title-section d-flex justify-content-between align-items-center mb-3">
+            <h1 class="inventory-title mb-0">Inventario de Piezas</h1>
+            <a th:href="@{/libros/create}" class="btn-krono-create">Ingresar Pieza</a>
+        </div>
+
+        <div th:if="${msg != null}" class="alert border-0 shadow-sm p-3 mb-4 d-flex justify-content-between align-items-center" role="alert" style="background-color: #f0fdf4; color: #166534; border-radius: 6px;">
+            <span class="small font-weight-bold" th:text="${msg}">¡Operación realizada con éxito!</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background: none; border: none; color: #166534; font-weight: bold; cursor: pointer;">&times;</button>
+        </div>
+
+        <div class="krono-card-table">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th class="ps-4" style="width: 8%;">ID</th>
+                            <th style="width: 10%;">Pieza</th>
+                            <th style="width: 26%;">Modelo de Reloj</th>
+                            <th style="width: 14%;">Lanzamiento</th>
+                            <th style="width: 12%;">Valor</th>
+                            <th class="text-center" style="width: 10%;">Destacado</th>
+                            <th class="text-center" style="width: 10%;">Disponibilidad</th>
+                            <th class="text-center pe-4" style="width: 10%;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="tempLibro : ${libros ?: listadoLibros}">
+                            <td class="ps-4 text-muted small" th:text="${tempLibro?.id}"></td>
+                            
+                            <td>
+                                <img th:src="@{/images/{img} (img=${tempLibro?.imagen != null && tempLibro?.imagen != '' ? tempLibro.imagen : 'no-image.png'})}" 
+                                     class="watch-img-thumbnail" 
+                                     width="50" height="50" 
+                                     alt="Reloj">
+                            </td>
+                            
+                            <td class="item-row-title" th:text="${tempLibro?.nomReloj}"></td>
+                            
+                            <td class="text-muted" th:text="${tempLibro?.fecha != null ? #dates.format(tempLibro.fecha, 'dd-MM-yyyy') : '---'}"></td>
+                            
+                            <td>
+                                <span class="price-text" th:text="|$$${tempLibro?.costo != null ? tempLibro.costo : '0.00'}|">$0.00</span>
+                            </td>
+                            
+                            <td class="text-center">
+                                <span th:if="${tempLibro?.destacado == 1}" class="badge-krono badge-yes">SÍ</span>
+                                <span th:unless="${tempLibro?.destacado == 1}" class="badge-krono badge-no">NO</span>
+                            </td>
+                            
+                            <td class="text-center">
+                                <span th:if="${tempLibro?.activo}" class="badge-krono badge-yes">EN STOCK</span>
+                                <span th:unless="${tempLibro?.activo}" class="badge-krono badge-pending">RESERVADO</span>
+                            </td>
+                            
+                            <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center">
+                                    <a th:href="@{/libros/view/{id} (id=${tempLibro?.id})}" class="btn-krono-action btn-detail">Detalle</a>
+                                    <a th:href="@{/libros/delete (id=${tempLibro?.id})}" class="btn-krono-action btn-delete">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer th:insert="~{footer :: pie-pagina}"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

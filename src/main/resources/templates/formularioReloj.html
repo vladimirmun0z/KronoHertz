@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>KronoHertz | Registro de Nueva Pieza</title>
+    
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #fcfcfd;
+            color: #0d0e10;
+            padding-top: 6.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .krono-title-section {
+            padding: 2.5rem 0 1rem 0;
+        }
+        .form-main-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0d0e10;
+            letter-spacing: -0.04em;
+        }
+        .form-subtitle {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .krono-card-form {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #f1f3f5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01), 0 20px 40px rgba(0,0,0,0.02);
+            padding: 3rem;
+            margin-bottom: 5rem;
+        }
+
+        .form-group label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .form-control, .custom-select {
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 6px !important;
+            height: 46px;
+            font-size: 0.9rem;
+            padding-left: 1rem;
+            background-color: #ffffff;
+            color: #0d0e10;
+            transition: all 0.2s ease;
+            box-shadow: none !important;
+        }
+        .form-control:focus, .custom-select:focus {
+            border-color: #0d0e10 !important;
+            background-color: #ffffff;
+        }
+        textarea.form-control {
+            height: auto !important;
+            padding-top: 0.75rem;
+        }
+
+        /* Rediseño de controles de opción a botones minimalistas */
+        .krono-btn-group-toggle {
+            display: flex;
+            gap: 8px;
+        }
+        .krono-toggle-btn {
+            flex: 1;
+            text-align: center;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 0.7rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #64748b;
+        }
+        .krono-btn-group-toggle input[type="radio"] {
+            display: none;
+        }
+        .krono-btn-group-toggle input[type="radio"]:checked + .krono-toggle-btn {
+            background-color: #0d0e10;
+            border-color: #0d0e10;
+            color: #ffffff;
+        }
+
+        /* Input de archivo corporativoizado */
+        .krono-file-upload {
+            position: relative;
+            display: block;
+        }
+        .krono-file-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.7rem 1rem;
+            background: #ffffff;
+            font-size: 0.88rem;
+            color: #64748b;
+            cursor: pointer;
+            height: 46px;
+            transition: border-color 0.2s;
+        }
+        .krono-file-label:hover {
+            border-color: #0d0e10;
+        }
+        .krono-file-btn {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .krono-file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn-krono-submit {
+            background-color: #0d0e10;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            padding: 0.9rem 3rem;
+            border-radius: 6px;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+        .btn-krono-submit:hover {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+
+        .preview-frame {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            display: inline-block;
+            padding: 8px;
+        }
+        .preview-frame img {
+            border-radius: 4px;
+            object-fit: cover;
+        }
+        
+        .divider-krono {
+            border-top: 1px solid #f1f3f5;
+            margin: 2.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div th:insert="~{menu :: menu-principal}"></div>
+
+    <div class="container mt-2">
+        
+        <div class="krono-title-section mb-4">
+            <h1 class="form-main-title">Ingreso de Pieza</h1>
+            <p class="form-subtitle">Agrega un nuevo modelo de alta relojería al inventario central de KronoHertz.</p>
+        </div>
+
+        <div class="krono-card-form">
+            <form th:action="@{/relojes/save}" th:object="${reloj}" method="post" enctype="multipart/form-data">
+
+                <div th:if="${#fields != null && #fields.hasErrors('*')}" class="alert alert-danger border-0 p-3 mb-4" role="alert" style="background-color: #fdf2f2; color: #9b1c1c; border-radius: 6px;">
+                    <span class="font-weight-bold" style="font-size: 0.88rem;">Por favor corrige los siguientes campos antes de guardar:</span>
+                    <ul class="mb-0 mt-2 small">
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+                    </ul>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nomReloj">Modelo del Reloj</label> 
+                            <input type="text" class="form-control" id="nomReloj" th:field="*{nomReloj}"
+                                   placeholder="Ej: Submariner Date, Speedmaster" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="descripcion">Descripción Comercial</label> 
+                            <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}"
+                                   placeholder="Breve reseña introductoria de la pieza" required="required">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="marcaReloj">Casa Manufacturera</label> 
+                            <select class="form-control custom-select" id="marcaReloj" th:field="*{marcaReloj.id}">
+                                <option value="">Seleccione firma...</option>
+                                <option th:each="m : ${marcas}" th:value="${m.id}" th:text="${m.nomMarca}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="activo">Estado del Inventario</label> 
+                            <select class="form-control custom-select" th:field="*{activo}" id="activo">
+                                <option value="true">Disponible (En Stock)</option>
+                                <option value="false">Reservado / Sin Stock</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="fecha">Fecha de Lanzamiento</label> 
+                            <input type="text" class="form-control" th:field="*{fecha}" id="fecha"
+                                   placeholder="DD-MM-YYYY" required="required" autocomplete="off">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label>Exposición del Catálogo</label>
+                        <div class="krono-btn-group-toggle">
+                            <label>
+                                <input type="radio" th:field="*{destacado}" id="destacado1" value="1">
+                                <div class="krono-toggle-btn">Destacado</div>
+                            </label>
+                            <label>
+                                <input type="radio" th:field="*{destacado}" id="destacado2" value="0">
+                                <div class="krono-toggle-btn">Normal</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-2">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="costo">Valor de Adquisición ($)</label> 
+                            <input type="text" class="form-control" th:field="*{costo}" id="costo"
+                                   placeholder="Ej: 8500.00" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Imagen Ilustrativa de la Pieza</label>
+                            <div class="krono-file-upload">
+                                <label class="krono-file-label" for="archivoImagen">
+                                    <span id="file-chosen-text">Ningún archivo seleccionado</span>
+                                    <span class="krono-file-btn">Buscar</span>
+                                </label>
+                                <input type="file" name="archivoImagen" id="archivoImagen">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider-krono"></div>
+                
+                <div class="row align-items-start">
+                    <div class="col-md-9">
+                        <div class="form-group mb-0">
+                            <label for="detalles">Especificaciones Técnicas e Índice de Calibre</label>
+                            <textarea class="form-control" th:field="*{detalles}" id="detalles" rows="6" 
+                                      placeholder="Componentes del calibre, tipo de bisel, reserva de marcha, materiales de la caja..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <label class="d-block mb-2" style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8;">Vista Previa</label> 
+                        <div class="preview-frame">
+                            <img id="img-preview-target" th:src="@{/images/no-image.png}"
+                                 alt="Pieza por defecto" width="140" height="140">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider-krono"></div>
+                
+                <div class="d-flex justify-content-start">
+                    <button type="submit" class="btn btn-krono-submit">Guardar Registro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer th:insert="~{footer :: pie-pagina}"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    
+    <script>
+      $(function () {
+          $("#fecha").datepicker({dateFormat: 'dd-mm-yy'});
+
+          // Script dinámico para actualizar el nombre del archivo y previsualizar la imagen de inmediato
+          $("#archivoImagen").on("change", function(e) {
+              var fileName = e.target.files[0] ? e.target.files[0].name : "Ningún archivo seleccionado";
+              $("#file-chosen-text").text(fileName);
+              
+              if (e.target.files[0]) {
+                  var reader = new FileReader();
+                  reader.onload = function(id) {
+                      $("#img-preview-target").attr("src", id.target.result);
+                  }
+                  reader.readAsDataURL(e.target.files[0]);
+              }
+          });
+      });
+    </script>
+</body>
+</html>
