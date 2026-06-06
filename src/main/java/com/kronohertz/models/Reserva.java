@@ -20,7 +20,6 @@ public class Reserva {
     private Date fechaReserva;
     private String estado; 
 
-    // Relación ManyToOne con la entidad Reloj de KronoHertz
     @ManyToOne
     @JoinColumn(name = "id_reloj") 
     private Reloj reloj;

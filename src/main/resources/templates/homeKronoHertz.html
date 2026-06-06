@@ -274,17 +274,17 @@
                 </div>
                 
                 <div class="search-container-krono col-lg-9 p-1">
-                    <form class="form-row align-items-center m-0">
+                    <form th:action="@{/}" method="get" class="form-row align-items-center m-0">
                         <div class="col-md-6 p-0">
-                            <input type="text" class="form-control search-input-krono" id="searchQuery" placeholder="Buscar por modelo, calibre o referencia de pieza...">
+                            <input type="text" name="query" class="form-control search-input-krono" placeholder="Buscar por modelo, calibre o referencia de pieza...">
                         </div>
                         <div class="col-md-4 p-0">
-                            <select class="custom-select search-select-krono" id="searchCategory">
-                                <option selected>Todas las firmas</option>
-                                <option value="1">Rolex</option>
-                                <option value="2">Omega</option>
-                                <option value="3">Patek Philippe</option>
-                                <option value="4">Audemars Piguet</option>
+                            <select class="custom-select search-select-krono" name="genero">
+                                <option value="" th:selected="${marcaSeleccionada == null}">Todas las firmas</option>
+                                <option th:each="m : ${listaMarcas}" 
+                                        th:value="${m.id}" 
+                                        th:text="${m.nomMarca}"
+                                        th:selected="${m.id == marcaSeleccionada}"></option>
                             </select>
                         </div>
                         <div class="col-md-2 p-1">
@@ -324,7 +324,7 @@
                                     <small>Valoración</small>
                                     <th:block th:text="|$${reloj?.costo != null ? reloj.costo : '0.00'}|">$0.00</th:block>
                                 </div>
-                                <a th:href="@{/relojes/view/{id}(id=${reloj?.id})}" class="card-explore-link">
+                                <a th:href="@{/detalle/{id}(id=${reloj?.id})}" class="card-explore-link">
                                     Explorar pieza 
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                                 </a>

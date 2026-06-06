@@ -36,4 +36,9 @@ public class RelojServiceImpl implements IRelojService {
     public void eliminar(int id) {
         relojRepo.deleteById(id);
     }
+
+    @Override
+    public List<Reloj> buscarPorMarca(int idMarca) {
+        return relojRepo.findByMarcaRelojId(idMarca);
+    }
 }

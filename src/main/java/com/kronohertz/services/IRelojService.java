@@ -8,4 +8,7 @@ public interface IRelojService {
     void guardar(Reloj reloj);
     Reloj buscarPorId(int id);
     void eliminar(int id);
+    
+    // filtradas por marca
+    List<Reloj> buscarPorMarca(int idMarca);
 }

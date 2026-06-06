@@ -6,5 +6,5 @@ import com.kronohertz.models.Reserva;
 
 @Repository
 public interface IReservaRepository extends JpaRepository<Reserva, Integer> {
-    // Debe llamarse IReservaRepository para que haga sinergia con el ServiceImpl
+
 }
