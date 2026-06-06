@@ -322,7 +322,7 @@
                             <div class="card-bottom-bar">
                                 <div class="card-price-display">
                                     <small>Valoración</small>
-                                    <th:block th:text="|$$${reloj?.costo != null ? reloj.costo : '0.00'}|">$0.00</th:block>
+                                    <th:block th:text="|$${reloj?.costo != null ? reloj.costo : '0.00'}|">$0.00</th:block>
                                 </div>
                                 <a th:href="@{/relojes/view/{id}(id=${reloj?.id})}" class="card-explore-link">
                                     Explorar pieza 
